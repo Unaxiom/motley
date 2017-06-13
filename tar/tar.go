@@ -3,9 +3,12 @@ package tar
 import (
 	"archive/tar"
 	"io"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/jhoonb/archivex"
 )
 
 // Tar accepts a source directory and tars it to the target file. Target file should not exist.
@@ -61,4 +64,33 @@ func Tar(sourceDir, target string) error {
 		_, err = io.Copy(tarball, file)
 		return err
 	})
+}
+
+// BigTar accepts a source directory and tars it to the target file. Target file should not exist. This method can handle big source directories as well.
+func BigTar(sourceDir, target string) error {
+	allContents, _ := ioutil.ReadDir(sourceDir)
+	tar := new(archivex.TarFile)
+	err := tar.Create(target)
+	if err != nil {
+		return err
+	}
+	for _, f := range allContents {
+		if f.Mode().IsDir() {
+			err = tar.AddAll(filepath.Join(sourceDir, f.Name()), true)
+			if err != nil {
+				return nil
+			}
+		} else if f.Mode().IsRegular() {
+			filename := filepath.Join(sourceDir, f.Name())
+			err = tar.AddFile(filename)
+			if err != nil {
+				return nil
+			}
+		}
+	}
+	err = tar.Close()
+	if err != nil {
+		return err
+	}
+	return nil
 }
