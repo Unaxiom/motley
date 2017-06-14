@@ -68,7 +68,10 @@ func Tar(sourceDir, target string) error {
 
 // BigTar accepts a source directory and tars it to the target file. Target file should not exist. This method can handle big source directories as well.
 func BigTar(sourceDir, target string) error {
-	allContents, _ := ioutil.ReadDir(sourceDir)
+	allContents, err := ioutil.ReadDir(sourceDir)
+	if err != nil {
+		return err
+	}
 	tar := new(archivex.TarFile)
 	err := tar.Create(target)
 	if err != nil {
