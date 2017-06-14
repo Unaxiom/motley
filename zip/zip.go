@@ -17,7 +17,7 @@ func Zip(sourceDir, target string) error {
 		return err
 	}
 	zip := new(archivex.ZipFile)
-	err := zip.Create(target)
+	err = zip.Create(target)
 	if err != nil {
 		return err
 	}

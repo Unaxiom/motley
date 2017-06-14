@@ -73,7 +73,7 @@ func BigTar(sourceDir, target string) error {
 		return err
 	}
 	tar := new(archivex.TarFile)
-	err := tar.Create(target)
+	err = tar.Create(target)
 	if err != nil {
 		return err
 	}
