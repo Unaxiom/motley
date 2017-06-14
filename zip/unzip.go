@@ -7,16 +7,16 @@ import (
 	"path/filepath"
 )
 
-// Unzip accepts the tarball file name and untars the file to a target destination (which does not exist)
+// Unzip accepts the tarball file name and untars the file to a target destination (which already exists)
 func Unzip(zipArchive, target string) error {
 	rdr, err := zip.OpenReader(zipArchive)
 	if err != nil {
 		return err
 	}
 
-	if err := os.MkdirAll(target, 0755); err != nil {
-		return err
-	}
+	// if err := os.MkdirAll(target, 0755); err != nil {
+	// 	return err
+	// }
 
 	for _, file := range rdr.File {
 		path := filepath.Join(target, file.Name)
