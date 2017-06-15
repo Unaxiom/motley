@@ -21,7 +21,10 @@ func Zip(sourceDir, target string) error {
 	if err != nil {
 		return err
 	}
+	// fmt.Println("Source is ", sourceDir)
+	// fmt.Println("Target is ", target)
 	for _, f := range allContents {
+		// fmt.Println("File is ", f.Name())
 		if f.Mode().IsDir() {
 			err = zip.AddAll(filepath.Join(sourceDir, f.Name()), true)
 			if err != nil {
@@ -29,7 +32,8 @@ func Zip(sourceDir, target string) error {
 			}
 		} else if f.Mode().IsRegular() {
 			filename := filepath.Join(sourceDir, f.Name())
-			err = zip.AddFile(filename)
+			// err = zip.AddFile(filename)
+			err = zip.AddFileWithName(f.Name(), filename)
 			if err != nil {
 				return nil
 			}
