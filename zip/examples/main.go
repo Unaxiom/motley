@@ -10,8 +10,8 @@ import (
 )
 
 func main() {
-	localZip()
-	// unzip()
+	// localZip()
+	unzip()
 
 }
 
@@ -29,8 +29,9 @@ func localZip() {
 
 func unzip() {
 	cwd, _ := os.Getwd()
-	cwdList := strings.Split(cwd, "/")
-	path := filepath.Join(strings.Join(cwdList[:len(cwdList)-1], "/"), "ProjectTemplate.zip")
+	// cwdList := strings.Split(cwd, "/")
+	// path := filepath.Join(strings.Join(cwdList[:len(cwdList)-1], "/"), "ProjectTemplate.zip")
+	path := filepath.Join(cwd, "ProjectTemplate.zip")
 	fmt.Println(path)
 	// err := zip.Unzip(path, filepath.Join(cwd, "ProjectTemplate"))
 	err := zip.Unzip(path, cwd)
