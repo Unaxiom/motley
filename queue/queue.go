@@ -58,7 +58,7 @@ func (q *FixedLenQueue) len() int {
 	return len(q.list)
 }
 
-// SetMaxLength would set the maximum size of the queue >=0. If 0, it would behave as a normal queue. If < 0, it would panic
+// SetMaxLength would set the maximum size of the queue >=0. If 0, it would behave as a normal queue. If < 0, it would throw an error.
 func (q *FixedLenQueue) SetMaxLength(length int) error {
 	// Call prune() here to trim the size of the queue after setting the maxLength attribute
 	if length < 0 {
