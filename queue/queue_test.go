@@ -3,7 +3,7 @@ package queue
 import "testing"
 
 func TestGenericQueue(t *testing.T) {
-	var q FixedLenQueue
+	var q BoundedQ
 	q.SetMaxLength(0)
 	q.Push(1)
 	q.Push(2)
@@ -14,7 +14,7 @@ func TestGenericQueue(t *testing.T) {
 }
 
 func TestQueueNegativeMaxLength(t *testing.T) {
-	var q FixedLenQueue
+	var q BoundedQ
 	a := q.SetMaxLength(-1)
 	if a.Error() != "SetMaxLength only accepts length >= 0. Provided length is -1" {
 		t.Fatal(a.Error())
@@ -22,7 +22,7 @@ func TestQueueNegativeMaxLength(t *testing.T) {
 }
 
 func TestMaxLenAtBegin(t *testing.T) {
-	var q FixedLenQueue
+	var q BoundedQ
 	q.SetMaxLength(2)
 	q.Push(1)
 	q.Push(2)
@@ -34,7 +34,7 @@ func TestMaxLenAtBegin(t *testing.T) {
 }
 
 func TestMaxLenTwice(t *testing.T) {
-	var q FixedLenQueue
+	var q BoundedQ
 	q.Push(1)
 	q.Push(2)
 	q.Push(3)
@@ -49,7 +49,7 @@ func TestMaxLenTwice(t *testing.T) {
 }
 
 func TestPushPop(t *testing.T) {
-	var q FixedLenQueue
+	var q BoundedQ
 	q.SetMaxLength(3)
 	q.Push(1)
 	q.Push(2)

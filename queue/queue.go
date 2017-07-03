@@ -6,15 +6,15 @@ import (
 	"sync"
 )
 
-// FixedLenQueue is a struct that acts as a queue (FIFO), with a limit imposed on the number of elements that it could hold. It can safely be used across goroutines.
-type FixedLenQueue struct {
+// BoundedQ is a struct that acts as a queue (FIFO), with a limit imposed on the number of elements that it could hold. It can safely be used across goroutines.
+type BoundedQ struct {
 	maxLength int // Stores the maximum number of elements in the Queue
 	list      []interface{}
 	sync.RWMutex
 }
 
 // Push adds an element to the queue
-func (q *FixedLenQueue) Push(element interface{}) {
+func (q *BoundedQ) Push(element interface{}) {
 	q.Lock()
 	defer q.Unlock()
 	q.push(element)
@@ -25,19 +25,19 @@ func (q *FixedLenQueue) Push(element interface{}) {
 }
 
 // push is the internal function that appends the element to the list without enabling any locks. Locks need to be handled at the outer level.
-func (q *FixedLenQueue) push(element interface{}) {
+func (q *BoundedQ) push(element interface{}) {
 	q.list = append(q.list, element)
 }
 
 // Pop removes and returns the first element from the queue
-func (q *FixedLenQueue) Pop() interface{} {
+func (q *BoundedQ) Pop() interface{} {
 	q.Lock()
 	defer q.Unlock()
 	return q.pop()
 }
 
 // pop is the internal function that removes the first element of the list without usage of any locks. Locks need to be handled at the outer level.
-func (q *FixedLenQueue) pop() interface{} {
+func (q *BoundedQ) pop() interface{} {
 	if q.len() == 0 {
 		return nil
 	}
@@ -47,19 +47,19 @@ func (q *FixedLenQueue) pop() interface{} {
 }
 
 // Len returns the number of elements in the queue
-func (q *FixedLenQueue) Len() int {
+func (q *BoundedQ) Len() int {
 	q.RLock()
 	defer q.RUnlock()
 	return q.len()
 }
 
 // len returns the number of elements in the queue without usage of any locks
-func (q *FixedLenQueue) len() int {
+func (q *BoundedQ) len() int {
 	return len(q.list)
 }
 
 // SetMaxLength would set the maximum size of the queue >=0. If 0, it would behave as a normal queue. If < 0, it would throw an error.
-func (q *FixedLenQueue) SetMaxLength(length int) error {
+func (q *BoundedQ) SetMaxLength(length int) error {
 	// Call prune() here to trim the size of the queue after setting the maxLength attribute
 	if length < 0 {
 		err := fmt.Sprint("SetMaxLength only accepts length >= 0. Provided length is ", length)
@@ -74,7 +74,7 @@ func (q *FixedLenQueue) SetMaxLength(length int) error {
 }
 
 // prune removes the first few elements such that the queue can be resized to the maxLength. Need to handle locks at a higher level.
-func (q *FixedLenQueue) prune() {
+func (q *BoundedQ) prune() {
 	// q.Lock()
 	// defer q.Unlock()
 	for {
