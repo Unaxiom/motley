@@ -92,8 +92,5 @@ func BigTar(sourceDir, target string) error {
 		}
 	}
 	err = tar.Close()
-	if err != nil {
-		return err
-	}
-	return nil
+	return err
 }

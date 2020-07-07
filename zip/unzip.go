@@ -42,6 +42,7 @@ func Unzip(zipArchive, target string) error {
 			if _, err := io.Copy(targetFile, fileReader); err != nil {
 				return err
 			}
+			targetFile.Close()
 		}
 
 	}

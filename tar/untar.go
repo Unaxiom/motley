@@ -42,6 +42,7 @@ func UnTar(tarball, targetDir string) error {
 		if err != nil {
 			return err
 		}
+		file.Close()
 	}
 	return nil
 }
